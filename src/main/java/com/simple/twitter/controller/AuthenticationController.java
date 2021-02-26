@@ -1,5 +1,6 @@
 package com.simple.twitter.controller;
 
+import com.simple.twitter.enums.UserRole;
 import com.simple.twitter.model.User;
 import com.simple.twitter.model.dto.user.AuthenticationToken;
 import com.simple.twitter.model.dto.user.AuthenticationUser;
@@ -24,7 +25,7 @@ public class AuthenticationController {
     @PostMapping("registration")
     public UserDto registrationUser(@RequestBody @Valid RegistrationUserDto registrationUserDto) {
         log.info("New user {}", registrationUserDto);
-        return userServiceSecurity.saveUser(registrationUserDto);
+        return userServiceSecurity.saveUser(registrationUserDto, UserRole.ROLE_USER);
     }
 
     @PostMapping("authentication")
@@ -58,7 +59,7 @@ public class AuthenticationController {
     @PostMapping("registration")
     public UserDto registrationManager(@RequestBody @Valid RegistrationUserDto registrationUserDto) {
         log.info("New user {}", registrationUserDto);
-        return userServiceSecurity.saveManager(registrationUserDto);
+        return userServiceSecurity.saveUser(registrationUserDto,UserRole.ROLE_MANAGER);
     }
 
 

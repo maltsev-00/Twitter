@@ -30,12 +30,12 @@ public class UserServiceSecurityImpl implements UserServiceSecurity {
     private final UserMapper userMapper;
 
     @Override
-    public UserDto saveUser(RegistrationUserDto newUser) {
+    public UserDto saveUser(RegistrationUserDto newUser,UserRole userRole) {
         if(userRepository.findUserByUsername(newUser.getUsername())==null) {
 
             User user = User.builder()
                     .email(newUser.getEmail())
-                    .userRole(UserRole.ROLE_USER.name())
+                    .userRole(userRole.name())
                     .username(newUser.getUsername())
                     .deleteCheck(true)
                     .password(passwordEncoder.encode(newUser.getPassword()))
@@ -134,26 +134,6 @@ public class UserServiceSecurityImpl implements UserServiceSecurity {
         }
         throw new ResourceNotFoundException("User with username : "
                 +username+" not founded");
-    }
-
-    @Override
-    public UserDto saveManager(RegistrationUserDto registrationUserDto) {
-        if(userRepository.findUserByUsername(registrationUserDto.getUsername())==null) {
-
-            User user = User.builder()
-                    .email(registrationUserDto.getEmail())
-                    .userRole(UserRole.ROLE_MANAGER.name())
-                    .username(registrationUserDto.getUsername())
-                    .deleteCheck(true)
-                    .password(passwordEncoder.encode(registrationUserDto.getPassword()))
-                    .build();
-
-            log.info("Save new manager {}",user);
-            userRepository.save(user);
-            return userMapper.toUserDto(user);
-        }
-        throw new BadRequestException("Username : "+
-                registrationUserDto.getUsername()+" was founded in database ");
     }
 
 
