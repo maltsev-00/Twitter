@@ -40,7 +40,7 @@ public class TwitterController {
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping("add-new-addition-twit")
-    public TwitterDto addNewAdditionalTwitInDatabase(UUID idTwitter,
+    public TwitterDto addNewAdditionalTwitInDatabase(@NotNull @RequestParam("idTwitter") UUID idTwitter,
                                         @Valid @RequestBody AdditionalTweets twit) {
         log.info("Save additional twit : {}",twit);
         return twitterService.addNewAdditionTwit(idTwitter,twit);
